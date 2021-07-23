@@ -24,9 +24,11 @@ Route::group(['middleware'=>'auth:api'], function() {
     Route::post('/listings/search','App\Http\Controllers\ListController@search');
     Route::post('/listings', 'App\Http\Controllers\ListController@store');
     Route::get('/listings', 'App\Http\Controllers\ListController@index');
-    Route::get('/listings/{listing}','App\Http\Controllers\ListController@show');
-    Route::put('/listings/{listing}','App\Http\Controllers\ListController@update');
-    Route::delete('/listings/{listing}','App\Http\Controllers\ListController@destroy');
 
+    Route::group(['middleware'=>'owner'], function(){
+        Route::get('/listings/{listing}','App\Http\Controllers\ListController@show');
+        Route::put('/listings/{listing}','App\Http\Controllers\ListController@update');
+        Route::delete('/listings/{listing}','App\Http\Controllers\ListController@destroy');    
+    });
 
 });

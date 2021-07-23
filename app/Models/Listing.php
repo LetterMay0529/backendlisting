@@ -16,7 +16,7 @@ class Listing extends Model
         'value',
         'description',
         'acquired_on',
-        'status'
+        'user_id'
     ];
 
     public function container() {

@@ -22,17 +22,27 @@ class ListController extends Controller
     }
 
     public function store(Request $request) {
+
         $request->validate([
             'prop_type' => 'string|required',
             'prop_category' => 'string|required',
             'location'=> 'string|required',
             'value' => 'numeric|required',
             'description' => 'string|required',
-            'acquired_on' => 'date|required',
+            'acquired_on' => 'date|required'
         ]);
 
         try {
-            $listing = Listing::create($request->all());
+
+            $listing = Listing::create([
+                'prop_type'=>$request->prop_type,
+                'prop_category'=>$request->prop_category,
+                'location'=>$request->location,
+                'value'=>$request->value,
+                'description'=>$request->description,
+                'acquired_on'=>$request->acquired_on,
+                'user_id'=> auth()->user()->id
+            ]);
             return response()->json($listing, 202);
         }catch(Exception $ex) {
             return response()->json([
@@ -57,7 +67,7 @@ class ListController extends Controller
     }
 
     public function index() {
-        $listings = Listing::orderBy('prop_type')->get();
+        $listings = Listing::where('user_id',auth()->user()->id)->orderBy('prop_type')->get();
         return response()->json($listings, 200);
     }
 }

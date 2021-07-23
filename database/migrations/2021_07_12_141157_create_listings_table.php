@@ -21,7 +21,10 @@ class CreateListingsTable extends Migration
             $table->decimal('value',12,2);
             $table->string('description');
             $table->date("acquired_on");
+            $table->bigInteger('user_id')->unsigned();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
